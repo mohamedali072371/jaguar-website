@@ -62,7 +62,7 @@ var swiper = new Swiper( '.swiper-container.two', {
         var backgroundColors = ['#ff9999', '#99ccff', '#99ff99', '#ffff99', '#99ccff'];
         bodyElement.style.backgroundColor = backgroundColors[activeIndex] || '#ffffff';
       
-        var backgroundVideo = ['assets/img/bag.mp4', 'assets/img/water-bottle.mp4', 'assets/img/watch.mp4', 'assets/img/sofa.mp4'];
+        var backgroundVideo = ['https://cdn.prod.website-files.com/649d435a8fa7ad5b0213159a/64f5a7c4dc5eb9f3844b1a9f_Eyewear%20Demo-transcode.mp4', 'assets/img/water-bottle.mp4', 'assets/img/watch.mp4', 'assets/img/sofa.mp4'];
         var source = document.getElementById('videoSource');
         console.log(source)
         source.src = backgroundVideo[activeIndex]
@@ -70,6 +70,9 @@ var swiper = new Swiper( '.swiper-container.two', {
     }
 } );
 
+function modelObject() {
+    console.log('Working..')
+}
 
 
 
