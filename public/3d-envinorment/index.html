@@ -1,0 +1,52 @@
+<!--
+=========================================================
+* Argon Dashboard 3 - v2.1.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+* Copyright 2024 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://www.creative-tim.com/license)
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png"> -->
+  <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+  <title>
+    Jaguar Designer - 3D Envinornment
+  </title>
+  <script async src="https://ga.jspm.io/npm:es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap-shim">
+      {
+        "imports": {
+          "three": "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+        }
+      }
+    </script>
+    <script type="module-shim"  src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script> 
+</head>
+
+<body>
+  <div style="height: 90vh;">
+    <model-viewer 
+      id="animated" 
+      camera-controls 
+      src="./assets/glb/Monitor.glb"
+      poster="./assets/image/monitor.webp"
+      shadow-intensity="1"
+      alt="A 3D model of a duck"
+      style="width: 100%; height: 100%;"
+    >
+    </model-viewer>
+  </div>
+</body>
+
+</html>
