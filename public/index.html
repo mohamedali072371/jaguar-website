@@ -205,6 +205,7 @@
                         id="animated" 
                         camera-controls 
                         src="./assets/glb/Monitor.glb" 
+                        ios-src="./assets/glb/SystemPreviewKC1xKg.usdz"
                         poster="https://modelviewer.dev/assets/ShopifyModels/Chair.webp"
                         ar alt="A 3D model of a duck"
                         ar-modes="webxr scene-viewer quick-look"
@@ -227,7 +228,7 @@
                         <div class="slider">
                             <div class="slides">
                             <button class="slide selected" onclick="switchSrc(this, 'Monitor', 0)" style="background-image: url('./assets/images/monitor.webp');"> </button>
-                            <button class="slide" onclick="switchSrc(this, 'Chair', 1)" style="background-image: url('https://modelviewer.dev/assets/ShopifyModels/Chair.webp');"></button>
+                            <button class="slide" onclick="switchSrc(this, 'Chair', 1)" style="background-image: url('./assets/img/poster.webp');"></button>
                             <button class="slide" onclick="switchSrc(this, 'Mixer', 2)" style="background-image: url('https://modelviewer.dev/assets/ShopifyModels/Mixer.webp');"></button>
                             <button class="slide" onclick="switchSrc(this, 'GeoPlanter', 3)" style="background-image: url('https://modelviewer.dev/assets/ShopifyModels/GeoPlanter.webp');"></button>
                             <button class="slide" onclick="switchSrc(this, 'ToyTrain', 4)" style="background-image: url('https://modelviewer.dev/assets/ShopifyModels/ToyTrain.webp');"></button>
@@ -500,7 +501,7 @@
             // }
           
             window.switchSrc = (element, name, index) => {
-                if (index != 0) {
+                if (index != 0 && index != 1 ) {
                     var backgroundVideo = ['assets/img/bag.mp4', 'assets/img/water-bottle.mp4', 'assets/img/watch.mp4', 'assets/img/sofa.mp4', 'assets/img/water-bottle.mp4'];
                     var source = document.getElementById('videoSource');
                     console.log(source)
@@ -509,6 +510,13 @@
                     const base = "https://modelviewer.dev/assets/ShopifyModels/" + name;
                     modelViewer.src = base + '.glb';
                     modelViewer.poster = base + '.webp';
+                    const slides = document.querySelectorAll(".slide");
+                    slides.forEach((element) => {element.classList.remove("selected");});
+                    element.classList.add("selected");
+                }
+                else if (index == 1) {
+                    modelViewer.src = './assets/glb/RobotExpressive.glb';
+                    modelViewer.poster ='./assets/images/monitor.webp';
                     const slides = document.querySelectorAll(".slide");
                     slides.forEach((element) => {element.classList.remove("selected");});
                     element.classList.add("selected");

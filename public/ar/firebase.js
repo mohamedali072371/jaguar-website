@@ -59,6 +59,7 @@ const  getObjectById = async () => {
         objectData =  docSnap.data();
         const modelViewerAnimated = document.querySelector("model-viewer#animated");
         modelViewerAnimated.setAttribute("src", objectData.file_path);
+        modelViewerAnimated.setAttribute("poster", objectData.poster_image);
         modelViewerAnimated.setAttribute("ios-src", objectData.ios_file_path);
 
 

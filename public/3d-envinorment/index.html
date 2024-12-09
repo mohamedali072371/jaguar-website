@@ -18,11 +18,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png"> -->
+  <!-- boostrap cnd link -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="icon" type="image/png" href="./assets/img/favicon.png">
-  <title>
-    Jaguar Designer - 3D Envinornment
-  </title>
+  <title>Jaguar Designer - 3D Envinornment</title>
+  <link rel="stylesheet" href="./style.css" />
+
   <script async src="https://ga.jspm.io/npm:es-module-shims@1.6.3/dist/es-module-shims.js"></script>
     <script type="importmap-shim">
       {
@@ -35,18 +36,32 @@
 </head>
 
 <body>
-  <div style="height: 90vh;">
-    <model-viewer 
-      id="animated" 
-      camera-controls 
-      src="./assets/glb/Monitor.glb"
-      poster="./assets/image/monitor.webp"
-      shadow-intensity="1"
-      alt="A 3D model of a duck"
-      style="width: 100%; height: 100%;"
-    >
-    </model-viewer>
-  </div>
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav" style="margin-top: 20px;">
+    <div class="container-fluid px-lg-5">
+        <a class="navbar-brand fw-bold mx-lg-5" href="#page-top">
+          <img
+            src="./assets/image/logo.png"
+            width="150px" 
+            style="background-color: linear-gradient(45deg, #ed469f, #2937f0) !important;"
+          />
+        </a>
+    </div>
+  </nav> 
+  <model-viewer 
+    id="animated" 
+    camera-controls 
+    src="./assets/glb/game-monitor.glb"
+    poster="./assets/image/game-monitor-poster.png"
+    shadow-intensity="1"
+    camera-orbit="-0.8707deg 75deg 1.875m"
+    camera-target="0.03m 0.3112m -0.0886m"
+    alt="A 3D model of a duck"
+  >
+  </model-viewer>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>
