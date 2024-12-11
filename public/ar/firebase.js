@@ -45,13 +45,20 @@ async function getData() {
       console.error("Error retrieving documents: ", error);
     }
   }
+
+  const getUpdatedObjectById = async () => {
+    const docRef = doc(db, objectCollection, docId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      objectData =  docSnap.data();
+    }
+  }
   
 const  getObjectById = async () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     docId = urlParams.get('id');
     requestLocationAccess();
-
     const docRef = doc(db, objectCollection, docId);
     const docSnap = await getDoc(docRef);
 
@@ -59,7 +66,7 @@ const  getObjectById = async () => {
         objectData =  docSnap.data();
         const modelViewerAnimated = document.querySelector("model-viewer#animated");
         modelViewerAnimated.setAttribute("src", objectData.file_path);
-        modelViewerAnimated.setAttribute("poster", objectData.poster_image);
+        // modelViewerAnimated.setAttribute("poster", objectData.poster_image);
         // modelViewerAnimated.setAttribute("ios-src", objectData.ios_file_path);
 
         modelViewerAnimated.addEventListener('load', (event) => {
@@ -67,7 +74,7 @@ const  getObjectById = async () => {
         })
 
          // checking the ar-status
-         modelViewerAnimated.addEventListener('ar-status', (event) => { 
+         modelViewerAnimated.addEventListener('ar-status', async (event) => { 
             if (event.detail.status === 'object-placed') {
                 updateRenderCount();
                 objectPlacedStartTime = Date.now();
@@ -81,6 +88,7 @@ const  getObjectById = async () => {
                     let totalPlacementDuration =  objectPlacementDuration / 1000;
                     addRenderDuration(totalPlacementDuration);
                     objectPlacementDuration = 0;
+                    await getUpdatedObjectById();
                 }
                 
             }
@@ -110,13 +118,33 @@ const  getObjectById = async () => {
 
   const updateClickCount = async () => {
     try {
-        const osType = getMobileOS();     
+            
         let updatedObject = {
-          click_count: objectData.click_count + 1
+          click_count: objectData.click_count + 1,
         }; 
+        updatedObject = {
+          ...updatedObject,
+          ...getOsTypeClickCount(),
+        }
+        console.log(updatedObject);
+        const docRef = doc(db, objectCollection, docId);
+        await updateDoc(docRef, updatedObject);
     } 
     catch (error) {
         console.error("Error updating document: ", error);
+    }
+  }
+
+ const getOsTypeClickCount = () => {
+    const osType = getOS(); 
+    if (osType == 1) {
+      return {android_click_count: objectData.android_click_count + 1}
+    }
+    else if (osType == 2) {
+      return {iphone_click_count: objectData.iphone_click_count + 1}
+    }
+    else if (osType == 3) {
+      return {pc_click_count: objectData.pc_click_count + 1}
     }
   }
 
@@ -130,7 +158,7 @@ const  getObjectById = async () => {
             latitude: latitude,
             longitude: longitude,
         }
-    
+        console.log(renderObject);
         await addDoc(collection(db, objectAnalysisCollection), renderObject);
     }
     catch(e) {
@@ -151,11 +179,26 @@ const  getObjectById = async () => {
     }
   }
 
+  function getOS() {
+    const userAgent = navigator.userAgent;
+    if (/android/i.test(userAgent)) {
+      return 1; // android
+    } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+      return 2; // iphone
+    }
+    else {
+      return 3; // pc
+    }
+  }
+
   let locationAlertCount = 0;
   function requestLocationAccess() {
+    console.log(1)
     if ("geolocation" in navigator && !isLocationPermission) {
+      console.log(2)
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          console.log(position)
           // Success: Position data is now available
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
@@ -163,11 +206,18 @@ const  getObjectById = async () => {
         },
         (error) => {
           if (error.code === error.PERMISSION_DENIED) {
-            // locationAlertCount += 1;
-            // if (locationAlertCount > 3) {
-            //   clearInterval(intervalId);
-            // }
-            // alert("Please allow location access in your settings.");
+            console.log(3)
+            if (locationAlertCount == 0) {
+              alert("Please allow location access in your settings.");
+            }
+
+            locationAlertCount += 1;
+            if (locationAlertCount <= 5) {
+              setTimeout(() => {
+                requestLocationAccess()
+              }, 5000)
+            }
+            
           } else {
             console.error("An error occurred: ", error.message);
           }
@@ -177,7 +227,7 @@ const  getObjectById = async () => {
   }
 
   // Call the function every 10 seconds (10000 milliseconds)
-  // let intervalId = setInterval(requestLocationAccess, 10000);
+  // let intervalId = setInterval(requestLocationAccess, 5000);
 
 
  const v = {
