@@ -18,6 +18,10 @@
       {
         "source": "/ar",
         "destination": "/ar/index.html"
+      },
+      {
+        "source": "/animated-poster",
+        "destination": "/animated-poster/index.html"
       }
     ]
   }
