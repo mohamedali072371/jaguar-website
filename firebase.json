@@ -22,6 +22,10 @@
       {
         "source": "/animated-poster",
         "destination": "/animated-poster/index.html"
+      },
+      {
+        "source": "/animated-poster-test",
+        "destination": "/animated-poster-test/index.html"
       }
     ]
   }
