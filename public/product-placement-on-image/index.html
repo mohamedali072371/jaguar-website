@@ -1,0 +1,288 @@
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/MindAR-js/aframe/dist/aframe-mindar.js"></script>  <!-- no need but need to test it..-->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>  <!-- use for the animation (animation-mixer) -->
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script> 
+    <!-- <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image-aframe.prod.js"></script> -->
+
+    <style>
+      #example-scanning-overlay {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: transparent;
+	z-index: 2;
+      }
+      @media (min-aspect-ratio: 1/1) {
+	#example-scanning-overlay .inner {
+	  width: 50vh;
+	  height: 50vh;
+	}
+      }
+      @media (max-aspect-ratio: 1/1) {
+	#example-scanning-overlay .inner {
+	  width: 80vw;
+	  height: 80vw;
+	}
+      }
+
+      #example-scanning-overlay .inner {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+
+	background:
+	  linear-gradient(to right, white 10px, transparent 10px) 0 0,
+	  linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+	  linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+	  linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+	  linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+	  linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
+	  linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+	  linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+	background-repeat: no-repeat;
+	background-size: 40px 40px;
+      }
+
+      #example-scanning-overlay.hidden {
+	display: none;
+      }
+
+      #example-scanning-overlay img {
+	opacity: 0.6;
+	width: 90%;
+	align-self: center;
+      }
+
+      #example-scanning-overlay .inner .scanline {
+	position: absolute;
+	width: 100%;
+	height: 10px;
+	background: white;
+	animation: move 2s linear infinite;
+      }
+      @keyframes move {
+	0%, 100% { top: 0% }
+	50% { top: calc(100% - 10px) }
+      }
+    </style>
+
+<script>
+// document.querySelector('a-scene').addEventListener('loaded', () => {
+    // const model = document.querySelector('#clickableModel');
+
+    // // Add an event listener for clicks on the model
+    // model.addEventListener('click', (event) => {
+    //   console.log(event)
+    //   const intersection = event.detail.intersection; // Get intersection details
+    //   if (intersection && intersection.object) {
+    //     const clickedMaterial = intersection.object.material;
+    //     const materialName = clickedMaterial.name || 'Unnamed Material'; // Get material name
+    //     console.log('Clicked material name:', materialName);
+
+    //     // Perform actions based on the material clicked
+    //     if (materialName === 'MaterialName1') {
+    //       console.log('Do something for MaterialName1');
+    //     } else {
+    //       console.log('Another material clicked');
+    //     }
+    //   }
+    // });
+  // });
+
+
+  AFRAME.registerComponent('anchor', {
+    init: function () {
+      var el = this.el;
+
+      const sceneEl = document.querySelector('a-scene');
+      const arSystem = sceneEl.systems["mindar-image-system"];
+      const model = document.querySelector('#clickableModel');
+      // el.components.createAnchor(position, quaternion);
+      model.addEventListener('click', (event) => {
+        console.log(event)
+        console.log(event.detail)
+        console.log(event.detail.intersection)
+      const intersection = event.detail.intersection; // Get intersection details
+      if (intersection && intersection.object) {
+        console.log(intersection)
+        console.log(intersection.object)
+        const clickedMaterial = intersection.object.material;
+        // const materialName = clickedMaterial.name || 'Unnamed Material'; // Get material name
+        // console.log('Clicked material name:', materialName);
+        console.log('Clicked material name:', clickedMaterial.name);
+
+        // Perform actions based on the material clicked
+        // if (materialName === 'MaterialName1') {
+        //   console.log('Do something for MaterialName1');
+        // } else {
+        //   console.log('Another material clicked');
+        // }
+      }
+    });
+
+      // this.el.addEventListener('click', (evt) => {
+      //   console.log('Clicked')
+      //   var object = evt.detail.intersection.object;
+
+      //   // name of entity to which component is attached
+      //   console.log(this.el.getObject3D('mesh').name);
+
+      //   // name of object directly clicked
+      //   console.log(object.name);
+
+      //   // name of object's parent
+      //   console.log(object.parent.name);
+
+      //   // name of object and its children
+      //   object.traverse((node) => console.log(node.name));
+      // });
+
+      // Ensure the model is fully loaded before applying the video texture
+      el.addEventListener('model-loaded', function(evt) {
+        console.log("Model loaded successfully!");
+
+        // Get the video element
+        var video = document.querySelector('#videoTexture');
+        video.play()
+          // Ensure the video starts playing
+
+        // Create a video texture
+        var videoTexture = new THREE.VideoTexture(video);
+
+        // Traverse the model and find the correct material (e.g., the screen)
+        console.log(evt)
+        // console.log(evt.detail.model)
+        // console.log(evt.detail.model.isMesh)
+        evt.detail.model.traverse(function(node) {
+          // console.log(node.material)
+          if (node.material && node.material.name === "Material") {
+               node.material.map = videoTexture;
+              node.material.needsUpdate = true;
+              console.log(node.material.map)
+              console.log(node.material.needsUpdate)
+          }
+          // console.log(node.material)
+          // console.log( node.material)
+          // if (node.material.name === "Material") {  // Replace 'Screen' with the actual name of the mesh
+          //   console.log("Applying video texture to:", node.name);
+          //   console.log( node.material)
+          //   // Apply the video texture to the material map
+          //   node.material.map = videoTexture;
+          //   node.material.needsUpdate = true;
+          //   console.log(node.material.map)
+          //   console.log(node.material.needsUpdate)
+          // }
+
+        });
+
+        // el.addEventListener("targetFound", () => {
+        //   console.log('play')
+        //   // arSystem.pause(keepVideo=false);
+        //   // arSystem.stop();
+        //   arSystem.unpause();
+        // });
+        el.addEventListener("click", () => {
+          console.log('play')
+          // arSystem.pause(keepVideo=false);
+          // arSystem.stop();
+        });
+      });
+    },
+    tick: function () {
+      // console.log(this.data.target.object3D)
+      // console.log(this.el.object3D.position)
+      // console.log(this.el.object3D.quaternion)
+      // console.log(this.el.object3D.rotation)
+      // if (this.data.target.object3D.visible) {
+      //   // Capture marker position and rotation
+      //   this.data.target.object3D.getWorldPosition(this.targetPosition);
+      //   this.data.target.object3D.getWorldQuaternion(this.targetQuaternion);
+
+      //   // Apply to the anchored object
+      //   this.el.object3D.position.copy(this.targetPosition);
+      //   this.el.object3D.quaternion.copy(this.targetQuaternion);
+      // }
+    },
+  });
+</script>
+  </head>
+  <body>
+    <!-- <div id="example-scanning-overlay" class="">
+      <div class="inner">
+      <img src="https://hiukim.github.io/mind-ar-js-doc/samples/assets/card-example/card.png">
+      <div class="scanline"></div>
+      </div>
+    </div> -->
+    
+
+    <a-scene 
+      mindar-image="imageTargetSrc: ./targets-3.mind; filterMinCF:0; filterBeta: 0.001;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+        <!-- Add ambient light for uniform illumination -->
+       <a-light type="ambient" color="#ffffff" intensity="0.5"></a-light>
+
+        <!-- Add point lights to illuminate the model from all sides -->
+         <a-light type="point" intensity="0.5" position="5 5 5" color="#ffffff"></a-light>
+        <a-light type="point" intensity="0.5" position="-5 5 5" color="#ffffff"></a-light>
+        <a-light type="point" intensity="0.5" position="5 -5 5" color="#ffffff"></a-light>
+        <a-light type="point" intensity="0.5" position="5 5 -5" color="#ffffff"></a-light>
+        <a-light type="point" intensity="0.5" position="-5 -5 -5" color="#ffffff"></a-light>
+      <a-assets>
+        <img id="card" src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/examples/image-tracking/assets/card-example/card.png" />
+        <a-asset-item id="avatarModel" src="./assets/smart-watch-with-plane-2.glb"></a-asset-item>
+        <video id="videoTexture" src="./assets/watch-screen.mp4" autoplay loop muted playsinline></video>
+        <img id="man" src="./assets/image/man.jpeg" />
+        <img id="feature" src="./assets/image/feature.jpeg" />
+        <img id="application" src="./assets/image/application-development.jpeg" />
+        <img id="product" src="./assets/image/product-development.jpeg" />
+        <img id="mobible" src="./assets/image/mobile-development.jpeg" />
+      </a-assets>
+     
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: 10000; objects: .clickable"></a-camera>
+      <!-- <a-camera position="0 0 0" look-controls cursor="fuse: false; rayOrigin: mouse;" raycaster="far: 10000; objects: .clickable"></a-camera> -->
+      <a-entity 
+        anchor
+        mindar-image-target="targetIndex: 0; anchored=persistent: true"
+      >
+        <a-gltf-model
+          id="clickableModel"
+          apply-video-texture
+          rotation="0 0 0" 
+          position="0 0 0" 
+          scale="0.2 0.2 0.2" 
+          src="#avatarModel" 
+          class="clickable"
+          animation-mixer
+        >
+      </a-gltf-model>
+      </a-entity>
+      
+      <!-- <a-entity mindar-image-target="targetIndex: 0">
+        <a-image  id="application-button" class="clickable" src="#man" position="0 0 0" height="0.588" width="1"></a-image>
+      </a-entity>
+      <a-entity mindar-image-target="targetIndex: 1">
+        <a-image  id="product-button" class="clickable" src="#feature" position="0 0 0" height="0.300" width="1"></a-image>
+        <a-image  id="product-button" class="clickable" src="#product" position="0 -1 0" height="0.300" width="1"></a-image>
+        <a-image  id="product-button" class="clickable" src="#mobible" position="0 -2 0" height="0.300" width="1"></a-image>
+      </a-entity> -->
+      <!-- <a-entity mindar-image-target="targetIndex: 2">
+        <a-image  id="mobible-button" class="clickable" src="#mobible" position="0 0 0" height="0.15" width="0.15"></a-image>
+      </a-entity> -->
+    </a-scene>
+  </body>
+</html>
