@@ -3,6 +3,7 @@ import { isChromeOrSafari, browserConstant, interactiveMaterialObject } from './
 const browser = isChromeOrSafari();
 
 let currentFeatureId = null;
+let videoPlayerMaterial = null;
 // Register a custom component to handle video playback
 AFRAME.registerComponent('business-card', {
   init: function () {
@@ -23,6 +24,7 @@ AFRAME.registerComponent('business-card', {
     const animationPoster = document.getElementById("animationPoster");
 
     var nenonVideoTexture = new THREE.VideoTexture(nenonVideo);
+    var nenonImageTexture = null;
 
     var envVideoTexture = new THREE.VideoTexture(env);
     var placeProductVideoTexture = new THREE.VideoTexture(placeProduct);
@@ -68,7 +70,6 @@ AFRAME.registerComponent('business-card', {
       //   dur: 2500,
       //   easing: "easeInOutQuad",
       // });
-      
 
       video.currentTime = 0; // Restart video from the beginning
       setTimeout(() => {
@@ -87,6 +88,9 @@ AFRAME.registerComponent('business-card', {
 
         setTimeout(() => {
           model.setAttribute('animation-mixer', { timeScale: 0 })
+          if (currentFeatureId != null) {
+            resumeVideo(currentFeatureId)
+          }
         }, 1500)
       }, 1000);
     });
@@ -95,7 +99,7 @@ AFRAME.registerComponent('business-card', {
 
     this.el.addEventListener('model-loaded', function  (evt) {
       interactiveObjectEvennt = evt;
-      let videoPlayerMaterial = getMaterialByName('vplane');
+      videoPlayerMaterial = getMaterialByName('vplane');
       setDefaultNenonVideoTexture();
       // evt.detail.model.traverse(function(node) {
       //   if (node.material && node.material.name === "tplane1") {
@@ -121,32 +125,6 @@ AFRAME.registerComponent('business-card', {
             setVideoTexture(materialData);
             }
         });
-
-        const stopPreviousFeature = (featureId) => {
-            let materialData = interactiveMaterialObject.find(data => data.id == featureId);
-            let videoDataObject = getVideo(materialData);
-            videoDataObject.video.pause();
-        }
-
-        const setVideoTexture= (materialData) => {
-            let videoDataObject = getVideo(materialData);
-            videoDataObject.video.currentTime = 0;
-            videoDataObject.video.play()
-            videoPlayerMaterial.material.map = videoDataObject.videoTexture;
-            videoPlayerMaterial.material.needsUpdate = true;
-        }
-
-        const getVideo = (materialData) => {
-            if (materialData.videoTexture == 'envVideoTexture') {
-                return { video: env, videoTexture: envVideoTexture }
-            }
-            else if (materialData.videoTexture == 'placeProductVideoTexture') {
-                return { video: placeProduct, videoTexture: placeProductVideoTexture }
-            }
-            else if (materialData.videoTexture == 'animationPosterVideoTexture') {
-                return { video: animationPoster, videoTexture: animationPosterVideoTexture }
-            }
-        }
     });
 
     let originalTextures  = {};
@@ -165,8 +143,11 @@ AFRAME.registerComponent('business-card', {
       else {
         const loader = new THREE.TextureLoader();
         loader.load('./assets/image/neon.png', (texture) => {
+          nenonImageTexture = texture;
           for (let data of  interactiveMaterialObject) {
             let material = getMaterialByName(data.materialName);
+            originalTextures[data.materialName] = material.material.map;
+
             material.material.transparent = true;
             material.material.map = texture;
             material.material.needsUpdate = true;
@@ -175,18 +156,58 @@ AFRAME.registerComponent('business-card', {
       }
     }
 
+    const setVideoTexture= (materialData) => {
+      let videoDataObject = getVideo(materialData);
+      videoDataObject.video.currentTime = 0;
+      videoDataObject.video.play()
+      videoPlayerMaterial.material.map = videoDataObject.videoTexture;
+      videoPlayerMaterial.material.needsUpdate = true;
+  }
+
+    const stopPreviousFeature = (featureId) => {
+      let materialData = interactiveMaterialObject.find(data => data.id == featureId);
+      let videoDataObject = getVideo(materialData);
+      videoDataObject.video.pause();
+    }
+
+    const resumeVideo = (featureId) => {
+      let materialData = interactiveMaterialObject.find(data => data.id == featureId);
+      let videoDataObject = getVideo(materialData);
+      videoDataObject.video.play();
+    }
+
+
+    const getVideo = (materialData) => {
+      if (materialData.videoTexture == 'envVideoTexture') {
+          return { video: env, videoTexture: envVideoTexture }
+      }
+      else if (materialData.videoTexture == 'placeProductVideoTexture') {
+          return { video: placeProduct, videoTexture: placeProductVideoTexture }
+      }
+      else if (materialData.videoTexture == 'animationPosterVideoTexture') {
+          return { video: animationPoster, videoTexture: animationPosterVideoTexture }
+      }
+  }
+
     const stopNenonTexture = (materialName) => {
         for (let key of  Object.keys(originalTextures)) {
             if (key != materialName) {
-                let material = getMaterialByName(key);
-                material.material.map = originalTextures[key];
-                material.material.needsUpdate = true;
+              let material = getMaterialByName(key);
+              material.material.map = originalTextures[key];
+              material.material.needsUpdate = true;
+            }
+
+            if (browser == browserConstant.chrome) {
+              let material = getMaterialByName(materialName);
+              material.material.transparent = true;
+              material.material.map = nenonVideoTexture;
+              material.material.needsUpdate = true;
             }
             else {
-                let material = getMaterialByName(materialName);
-                material.material.transparent = true;
-                material.material.map = nenonVideoTexture;
-                material.material.needsUpdate = true;
+              let material = getMaterialByName(materialName);
+              material.material.transparent = true;
+              material.material.map = nenonImageTexture;
+              material.material.needsUpdate = true;
             }
         }
     }
@@ -208,6 +229,7 @@ AFRAME.registerComponent('business-card', {
       // plane.removeAttribute('animation');
       model.removeAttribute('animation-mixer')
       video.pause();
+      stopPreviousFeature(currentFeatureId)
     });
   }
 });
