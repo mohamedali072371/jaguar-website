@@ -3,15 +3,14 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/MindAR-js/aframe/dist/aframe-mindar.js"></script>
-  <!-- no need but need to test it..-->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
-  <!-- use for the animation (animation-mixer) -->
-  <!-- <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image-aframe.prod.js"></script> -->
-  <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
-  <!-- use for the green screen transparency -->
+  <script src="./js/mindar-image.prod.js"></script>
+  <script src="./js/mindar-image-aframe.prod.js"></script>
 
+  <!-- use for the animation (animation-mixer) -->
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
+  <!-- use for the green screen transparency -->
+  <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+  
   <style>
     #example-scanning-overlay {
       display: flex;
@@ -91,6 +90,7 @@
   </style>
 
   <script type="module" src="./js/main.js"></script>
+  <script  src="./js/rotation.js"></script>
 </head>
 
 <body>
@@ -102,29 +102,39 @@
       </div>
     </div> -->
   <a-scene
-    mindar-image="imageTargetSrc: ./assets/target.mind; filterMinCF:0.0001; filterBeta: 0.01;"
-    vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    mindar-image="imageTargetSrc: ./assets/target.mind;"
+    vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
+  >
     <a-assets>
       <a-asset-item id="interactivePoster" src="./assets/glb/interactive-poster.glb"></a-asset-item>
       <video id="card" src="./assets/video/bridging.mp4" autoplay muted playsinline></video>
       <video id="nenon" src="./assets/video/nenon.webm" autoplay loop muted playsinline></video>
       <video id="3dEnv" src="./assets/video/3denv_video (1).mp4" autoplay loop muted playsinline></video>
       <video id="placeProduct" src="./assets/video/place_in_live_new.mp4" autoplay loop muted playsinline></video>
-      <video id="animationPoster" src="./assets/video/anim-post-instruction.mp4" autoplay loop muted
-        playsinline></video>
+      <video id="animationPoster" src="./assets/video/anim-post-instruction.mp4" autoplay loop muted playsinline></video>
     </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
-      raycaster="far: 10000; objects: .clickable"></a-camera>
-    <a-entity business-card mindar-image-target="targetIndex: 0" id="targetEntity">
+    <a-camera 
+      position="0 0 0" 
+      look-controls="enabled: false"
+      cursor="fuse: false; rayOrigin: mouse;"
+      raycaster="far: 10000; objects: .clickable"
+    >
+    </a-camera>
+    <a-entity business-card mindar-image-target="targetIndex: 0">
       <a-plane src="#card" position="-0.9 0 0" height="0.800" width="1" rotation="0 0 0" visible="false"
         material="shader: chromakey; transparent: true; opacity: 0">
       </a-plane>
-      <!-- <a-anchor id="posterAnchor" position="0 0 0"> -->
-        <a-gltf-model  anchored="persistent: true"  poster id="interactivePosterObject" rotation="90 0 0" position="0 0 0" scale="0.5 0.5 0.5"
-          src="#interactivePoster" class="clickable">
-          </a-gltf-model>
-      <!-- </a-anchor> -->
+        <a-gltf-model  
+          interactive-rotation 
+          anchored="persistent: true" 
+          src="#interactivePoster"
+          rotation="90 0 0" 
+          position="0 0 0" 
+          scale="0.5 0.5 0.5"
+          
+          class="clickable">
+        </a-gltf-model>
 
         <!-- <a-cylinder 
           material="src: #card; side: double" 

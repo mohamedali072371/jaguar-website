@@ -7,13 +7,10 @@ let videoPlayerMaterial = null;
 // Register a custom component to handle video playback
 AFRAME.registerComponent('business-card', {
   init: function () {
-    // Get the video element
-    const sceneEl = document.querySelector('a-scene');
 
+    // Get the video element
     const video = document.getElementById("card");
     const nenonVideo = document.getElementById("nenon");
-    // const scaninig = document.getElementById("example-scanning-overlay");
-    var animatedPoster = document.getElementById("animated");
     const plane = this.el.querySelector("a-plane");
     const model = this.el.querySelector("a-gltf-model");
 
@@ -30,46 +27,8 @@ AFRAME.registerComponent('business-card', {
     var placeProductVideoTexture = new THREE.VideoTexture(placeProduct);
     var animationPosterVideoTexture = new THREE.VideoTexture(animationPoster);
 
-    const interactivePosterObject = document.querySelector("#interactivePosterObject");
-    const targetEntity = document.querySelector("#targetEntity");
-
     // Listen for the target being found
     this.el.addEventListener("targetFound", (evt) => {
-      // scaninig.classList.add("hidden");
-      const arSystem = sceneEl.systems["mindar-image-system"];
-    const mindarSystem = sceneEl.systems['mindar-image'];
-    // console.log(arSystem)
-    // console.log(mindarSystem)
-    //   console.log(plane)
-    // const position  = interactivePosterObject.object3D.position.clone();
-    // const rotation = interactivePosterObject.object3D.rotation.clone();
-
-    // if (sceneEl.hasLoaded && sceneEl.xrSession) {
-    //   const xrSession = sceneEl.xrSession;
-      
-    //   // Create the anchor using the WebXR API
-    //   const anchor = xrSession.createAnchor(position, rotation);
-    //   if (anchor) {
-    //     // Apply anchor to object
-    //     interactivePosterObject.setAttribute('position', position);
-    //     interactivePosterObject.setAttribute('rotation', rotation);
-        
-    //     // Optionally, apply a persistent anchor (this will keep the position stable)
-    //     interactivePosterObject.setAttribute('anchored', 'persistent: true');
-    //   }
-    // }
-    // else {
-    //   alert('No')
-    // }
-
-    // console.log(currentPosition)
-    // console.log(currentRotation)
-      // plane.setAttribute("animation", {
-      //   property: "material.opacity",
-      //   to: 1,
-      //   dur: 2500,
-      //   easing: "easeInOutQuad",
-      // });
 
       video.currentTime = 0; // Restart video from the beginning
       setTimeout(() => {
@@ -101,30 +60,24 @@ AFRAME.registerComponent('business-card', {
       interactiveObjectEvennt = evt;
       videoPlayerMaterial = getMaterialByName('vplane');
       setDefaultNenonVideoTexture();
-      // evt.detail.model.traverse(function(node) {
-      //   if (node.material && node.material.name === "tplane1") {
-      //       node.material.transparent = true;
-      //       // node.material.opacity = 1;
-      //       node.material.map = nenonVideoTexture;
-      //       node.material.needsUpdate = true;
-      //   }
-      // })
+      model.addEventListener('click', (event) => {
+          const intersection = event.detail.intersection; // Get intersection details
+          if (intersection && intersection.object) {
+          const clickedMaterial = intersection.object.material;
+          console.log(clickedMaterial.name)
 
-        model.addEventListener('click', (event) => {
-            const intersection = event.detail.intersection; // Get intersection details
-            if (intersection && intersection.object) {
-            const clickedMaterial = intersection.object.material;
-            console.log(clickedMaterial.name)
-
-            let materialData = interactiveMaterialObject.find(data => data.materialName == clickedMaterial.name)
+          let materialData = interactiveMaterialObject.find(data => data.materialName == clickedMaterial.name)
+          if (materialData) {
             if (currentFeatureId != null) {
                 stopPreviousFeature(currentFeatureId);
             }
             stopNenonTexture(clickedMaterial.name);
             currentFeatureId = materialData.id;
             setVideoTexture(materialData);
-            }
-        });
+          }
+          
+          }
+      });
     });
 
     let originalTextures  = {};
@@ -190,26 +143,26 @@ AFRAME.registerComponent('business-card', {
   }
 
     const stopNenonTexture = (materialName) => {
-        for (let key of  Object.keys(originalTextures)) {
-            if (key != materialName) {
-              let material = getMaterialByName(key);
-              material.material.map = originalTextures[key];
-              material.material.needsUpdate = true;
-            }
+      for (let key of  Object.keys(originalTextures)) {
+          if (key != materialName) {
+            let material = getMaterialByName(key);
+            material.material.map = originalTextures[key];
+            material.material.needsUpdate = true;
+          }
 
-            if (browser == browserConstant.chrome) {
-              let material = getMaterialByName(materialName);
-              material.material.transparent = true;
-              material.material.map = nenonVideoTexture;
-              material.material.needsUpdate = true;
-            }
-            else {
-              let material = getMaterialByName(materialName);
-              material.material.transparent = true;
-              material.material.map = nenonImageTexture;
-              material.material.needsUpdate = true;
-            }
-        }
+          if (browser == browserConstant.chrome) {
+            let material = getMaterialByName(materialName);
+            material.material.transparent = true;
+            material.material.map = nenonVideoTexture;
+            material.material.needsUpdate = true;
+          }
+          else {
+            let material = getMaterialByName(materialName);
+            material.material.transparent = true;
+            material.material.map = nenonImageTexture;
+            material.material.needsUpdate = true;
+          }
+      }
     }
 
     const getMaterialByName = (materialName) => {
@@ -227,9 +180,13 @@ AFRAME.registerComponent('business-card', {
       // scaninig.classList.remove("hidden");
       // plane.setAttribute('material', { opacity: 0 })
       // plane.removeAttribute('animation');
+      model.setAttribute('rotation', {x: 90, y: 0, z: 0});
       model.removeAttribute('animation-mixer')
       video.pause();
-      stopPreviousFeature(currentFeatureId)
+      if (currentFeatureId != null) {
+        stopPreviousFeature(currentFeatureId)
+      }
+     
     });
   }
 });
