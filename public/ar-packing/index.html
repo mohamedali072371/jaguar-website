@@ -3,14 +3,14 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/MindAR-js/aframe/dist/aframe-mindar.js"></script>
-  <!-- no need but need to test it..-->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
+   <script src="./js/mindar-image.prod.js"></script>
+  <script src="./js/mindar-image-aframe.prod.js"></script>
+ 
   <!-- use for the animation (animation-mixer) -->
-  <!-- <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image-aframe.prod.js"></script> -->
-  <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
   <!-- use for the green screen transparency -->
+  <script src="https://unpkg.com/aframe-chromakey-material/dist/aframe-chromakey-material.min.js"></script>
+  
 
   <style>
     #example-scanning-overlay {
@@ -105,8 +105,11 @@
     mindar-image="imageTargetSrc: ./assets/target.mind; filterMinCF:0.0001; filterBeta: 0.01;"
     vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     <a-assets>
-      <a-asset-item id="bluetoothSpeakerObject" src="./assets/glb/bluetooth-speaker.glb"></a-asset-item>
-      <video id="lightGrowVideo" src="./assets/video/rock-on.mp4" autoplay loop  playsinline></video>
+      <a-asset-item id="bluetoothSpeakerObject" src="./assets/glb/bluetooth-speaker-plane.glb"></a-asset-item>
+      <img id="speaker-body" src="./assets/image/speaker-texture.jpg" />
+      <video id="lightGrowVideo" src="./assets/video/rock-on.mp4"  loop playsinline></video>
+      <video id="growVideo" src="./assets/video/bridging.mp4"  loop  playsinline></video>
+      <video id="spiralVideo" src="./assets/video/glow 1.mp4"  loop  playsinline></video>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
@@ -116,14 +119,19 @@
           anchored="persistent: true" 
           rotation="90 0 0" 
           position="0 0 0" 
-          scale="50 50 50"
+          scale="0.1 0.1 0.1"
           src="#bluetoothSpeakerObject" 
           class="clickable"
+          animation-mixer
         >
         </a-gltf-model>
 
     </a-entity>
   </a-scene>
+
+  <!-- <a id="ar-link" rel="ar" href="./assets/glb/New Project 2.reality">  
+    <img src="./assets/image/interactive-card.jpg" width="200" height="250">
+  </a> -->
 </body>
 
 </html>

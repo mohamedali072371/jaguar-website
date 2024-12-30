@@ -26,6 +26,21 @@
       {
         "source": "/animated-poster-test",
         "destination": "/animated-poster-test/index.html"
+      },
+      {
+        "source": "/ar-packing",
+        "destination": "/ar-packing/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.reality",
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "model/vnd.reality"
+          }
+        ]
       }
     ]
   }
