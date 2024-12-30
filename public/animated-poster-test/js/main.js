@@ -1,4 +1,4 @@
-import { isChromeOrSafari, browserConstant, interactiveMaterialObject } from './constant/constant.js';
+import { isChromeOrSafari, browserConstant, interactiveMaterialObject, getMobileOS, mobileOSConstant } from './constant/constant.js';
 
 const browser = isChromeOrSafari();
 
@@ -188,5 +188,19 @@ AFRAME.registerComponent('business-card', {
       }
      
     });
+  }
+});
+
+window.addEventListener('load', () => {
+
+  const osType = getMobileOS();
+  console.log(osType)
+  if (osType == mobileOSConstant.ios) {
+    const link = document.createElement('a');
+    link.href = "./assets/glb/New Project 2.reality";
+    link.id = "ar-link";
+    link.rel = "ar";
+
+    link.click();
   }
 });
