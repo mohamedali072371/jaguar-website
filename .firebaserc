@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "jaguar-designer"
+  },
+  "targets": {
+    "jaguar-designer": {
+      "hosting": {
+        "shameemsha": [
+          "jaguar-designer"
+        ]
+      }
+    }
   }
 }

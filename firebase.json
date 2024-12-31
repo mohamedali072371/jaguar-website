@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "shameemsha",
     "public": "public",
     "ignore": [
       "firebase.json",
@@ -30,6 +31,10 @@
       {
         "source": "/ar-packing",
         "destination": "/ar-packing/index.html"
+      },
+      {
+        "source": "/new-year-greetings",
+        "destination": "/new-year-greetings/index.html"
       }
     ],
     "headers": [
