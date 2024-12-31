@@ -13,26 +13,6 @@
         "destination": "/index.html"
       },
       {
-        "source": "/3d-envinorment",
-        "destination": "/3d-envinorment/index.html"
-      },
-      {
-        "source": "/ar",
-        "destination": "/ar/index.html"
-      },
-      {
-        "source": "/animated-poster",
-        "destination": "/animated-poster/index.html"
-      },
-      {
-        "source": "/animated-poster-test",
-        "destination": "/animated-poster-test/index.html"
-      },
-      {
-        "source": "/ar-packing",
-        "destination": "/ar-packing/index.html"
-      },
-      {
         "source": "/new-year-greetings",
         "destination": "/new-year-greetings/index.html"
       }
