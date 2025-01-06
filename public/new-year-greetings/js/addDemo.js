@@ -8,7 +8,7 @@ const addClient = async (userContactRequest) => {
     userContactRequest.object_id = docRef.id;
     console.log(userContactRequest)
     await setDoc(docRef, { ...userContactRequest })
-    
+    console.log(`Client: ${userContactRequest.client_name} - ID: ${userContactRequest.object_id}`)
 }
 
 const constantData = {
@@ -34,7 +34,9 @@ const constantData = {
 }
 
 const namesList = [
-    { name: "Bala", removedSpace: "Bala" },
+    { name: "surya", removedSpace: "surya" },
+    { name: "ganesh", removedSpace: "ganesh" },
+    { name: "jega", removedSpace: "jega" },
     // { name: "Vineet Budki", removedSpace: "Vineet-Budki" },
     // { name: "Bill Qian", removedSpace: "Bill-Qian" },
     // { name: "Bijan", removedSpace: "Bijan" },
@@ -53,15 +55,15 @@ const namesList = [
 
 let clientData = [];
 namesList.forEach(name => {
-    let copyData = constantData;
+    let copyData = {...constantData};
     copyData.client_name = name.name;
     copyData.file_name =  `golden-box-${name.removedSpace}.glb`;
     copyData.name =  `Golden Gift Box - ${ name.name}`;
     clientData.push(copyData);
 });
 
-// for (let data of clientData) {
+for (let data of clientData) {
 //    await addClient(data);
-// }
+}
 
 
