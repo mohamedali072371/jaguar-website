@@ -34,6 +34,10 @@
       {
         "source": "/new-year-greetings",
         "destination": "/new-year-greetings/index.html"
+      },
+      {
+        "source": "/pongal",
+        "destination": "/pongal/index.html"
       }
     ],
     "headers": [
