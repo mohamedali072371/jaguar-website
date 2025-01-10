@@ -50,7 +50,9 @@
   <video id="load" src="./assets/video/color.mp4" autoplay loop muted></video>
   <model-viewer 
     id="monitor" 
-    camera-controls 
+    camera-controls
+    ar
+    ar-modes="webxr scene-viewer quick-look" 
     loading="eager"
     src="./assets/glb/monitor-low-poly.glb"
     disable-tap
@@ -59,6 +61,17 @@
     camera-target="0.03m 0.3112m -0.0886m"
     alt="A 3D model monitor"
   >
+    <button slot="ar-button" id="ar-button">
+      Click to see in your space
+    </button>
+
+    <div id="ar-prompt">
+        <img src="https://modelviewer.dev/assets/hand.png">
+    </div>
+
+    <button id="ar-failure">
+        AR is not tracking!
+    </button>
   </model-viewer>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

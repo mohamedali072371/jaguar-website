@@ -26,7 +26,9 @@ modelViewerMonitor.addEventListener("load", async () => {
     screenMeterial.pbrMetallicRoughness.baseColorTexture.setTexture(monitorScreenVideoTexture); 
     redLightMeterial.pbrMetallicRoughness.baseColorTexture.setTexture(lightVideoTexture); 
     
-
+    const arButton = document.getElementById('ar-button');
+    arButton.style.display = "block";
+    
     const loader = document.getElementById("load");
     loader.style.display = "none";
     loader.pause();
