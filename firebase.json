@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "jaguar-promotion",
+    "site": "visual-tyre",
     "public": "public",
     "ignore": [
       "firebase.json",
@@ -11,14 +11,6 @@
       {
         "source": "**",
         "destination": "/index.html"
-      },
-      {
-        "source": "/3d-envinorment",
-        "destination": "/3d-envinorment/index.html"
-      },
-      {
-        "source": "/ar",
-        "destination": "/ar/index.html"
       }
     ],
     "headers": [

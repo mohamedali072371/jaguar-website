@@ -5,7 +5,7 @@
   "targets": {
     "jaguar-designer": {
       "hosting": {
-        "jaguar-promotion": [
+        "visual-tyre": [
           "jaguar-designer"
         ]
       }
