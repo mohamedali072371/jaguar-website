@@ -102,7 +102,7 @@
       </div>
     </div> -->
   <a-scene
-    mindar-image="imageTargetSrc: ./assets/target.mind;"
+    mindar-image="imageTargetSrc: ./assets/targets-2.mind;  maxTrack: 2"
     vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
   >
     <a-assets>
@@ -135,6 +135,30 @@
           
           class="clickable">
         </a-gltf-model>
+
+        <!-- <a-cylinder 
+          material="src: #card; side: double" 
+          height="0.600" 
+          radius="0.5"
+          open-ended="true"
+        ></a-cylinder> -->
+
+    </a-entity>
+    <a-entity mindar-image-target="targetIndex: 1">
+      <a-sphere color="yellow" radius="0.2"></a-sphere>
+       <!-- <a-plane src="#card" position="-0.9 0 0" height="0.800" width="1" rotation="0 0 0" visible="false"
+        material="shader: chromakey; transparent: true; opacity: 0">
+      </a-plane> -->
+      <!--  <a-gltf-model  
+          interactive-rotation 
+          anchored="persistent: true" 
+          src="#interactivePoster"
+          rotation="90 0 0" 
+          position="0 0 0" 
+          scale="0.5 0.5 0.5"
+          
+          class="clickable">
+        </a-gltf-model> -->
 
         <!-- <a-cylinder 
           material="src: #card; side: double" 
