@@ -1,10 +1,22 @@
 const modelViewerTyre = document.querySelector("model-viewer#animated");
-const animationStopTime = 8.95;
+const animationStopTime = 11;
 modelViewerTyre.addEventListener("load", async () => {
         
     const arButton = document.getElementById('ar-button');
     arButton.style.display = "block";
     playAnimation();
+
+
+    document.addEventListener('click', async (event) => {
+        const material = modelViewerTyre.materialFromPoint(event.clientX, event.clientY);
+
+        if (material != null) {
+            let materialName = material.name;
+            if (materialName == 'play-again') {
+                playAnimation();
+            }
+        }
+    });
 
 })
 
