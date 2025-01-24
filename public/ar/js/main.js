@@ -8,20 +8,17 @@ deafultCameraPosition();
 
 modelViewerTyre.addEventListener("load", async () => { 
     const arButton = document.getElementById('ar-button');
-    arButton.style.display = "block";
-    playAnimation();
+     const arIosButton = document.getElementById('arButton');
+       
+    const osType = getMobileOS();
+    if (osType == mobileOSConstant.ios) {
+        arIosButton.style.display = "block";
+    }
+    else {
+        arButton.style.display = "block";
+    }
 
-    arButton.addEventListener("click", () => {
-        const osType = getMobileOS();
-        if (osType == mobileOSConstant.ios) {
-          const link = document.createElement('a');
-          link.href = "./assets/glb/tyre-branding.reality";
-          link.id = "ar-link";
-          link.rel = "ar";
-      
-          link.click();
-        }
-    });
+    playAnimation();
 
     document.addEventListener('click', async (event) => {
         const material = modelViewerTyre.materialFromPoint(event.clientX, event.clientY);

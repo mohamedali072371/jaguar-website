@@ -49,6 +49,31 @@ button {
     display: none;
 }
 
+#arButton {
+    background-color: #fff;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 132px;
+    padding: 0px 16px 0px 20px;
+    font-family: Roboto Regular, Helvetica Neue, sans-serif;
+    font-size: 14px;
+    color: #4285f4;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 18px;
+    border: 1px solid #DADCE0;
+    display: inline-flex;
+    align-items: center;
+    display: none;
+}
+
+#arButton img {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px; /* Space between the image and text */
+}
+
 #ar-button:active {
     background-color: #E8EAED;
 }
