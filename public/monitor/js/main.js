@@ -117,9 +117,7 @@ const stopAnimationAtTime = () => {
 
 
 function deafultCameraPosition() {
-    console.log(width)
     if (width <= 480) { 
-        console.log('Works')
         modelViewerMonitor.setAttribute("camera-orbit", '2.177deg 86.32deg 15.11m');
         modelViewerMonitor.setAttribute("camera-target", '-1m 1m 0.001144m');
         // modelViewerMonitor.setAttribute("field-of-view", "18deg");
