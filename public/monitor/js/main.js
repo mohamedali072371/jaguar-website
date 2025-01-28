@@ -5,13 +5,15 @@ const animationStopTime = 18;
 const width = window.innerWidth; 
 
 let monitorScreenVideoTexture = null;
+let lightVideoTexture = null;
 let monitorVideoBind = false;
 
 deafultCameraPosition();   
 
 try {
     customElements.whenDefined('model-viewer').then(async () => {
-        monitorScreenVideoTexture = modelViewerMonitor.createVideoTexture("./assets/video/color.mp4");
+        monitorScreenVideoTexture = modelViewerMonitor.createVideoTexture("./assets/video/intro-video.mp4");
+        lightVideoTexture = modelViewerMonitor.createVideoTexture("./assets/video/rock-on.mp4");
     })
 }
 catch (e) {
@@ -41,20 +43,28 @@ modelViewerMonitor.addEventListener("load", async () => {
             }
             else if (materialName == 'pause-video') {
                 pauseVideo(monitorScreenVideoTexture);
+                pauseVideo(lightVideoTexture);
             }
         }
     });
 
 })
 
+
 const bindMonitorVideoTexture = async () => {
     if (!monitorVideoBind) {
         monitorVideoBind = true;
         const screenMeterial = await getMaterialByName("led-screen");
         screenMeterial.pbrMetallicRoughness.baseColorTexture.setTexture(monitorScreenVideoTexture); 
+        monitorScreenVideoTexture.source.element.muted = false;
+        monitorScreenVideoTexture.source.element.volume = 0.4;
+
+        const redLightMeterial = await getMaterialByName("lighting");
+        redLightMeterial.pbrMetallicRoughness.baseColorTexture.setTexture(lightVideoTexture); 
     }
     else {
         playVideo(monitorScreenVideoTexture);
+        playVideo(lightVideoTexture);
     }
 }
 
@@ -72,6 +82,7 @@ const videoRestart = (videoTexture) => {
     if (monitorVideoBind) {
         videoTexture.source.element.currentTime = 0;
         playVideo(videoTexture);
+        playVideo(lightVideoTexture);
     }
 }
 
@@ -83,12 +94,14 @@ modelViewerMonitor.addEventListener('ar-status', async (event) => {
     if (event.detail.status == 'session-started') {
         stopAnimation();
         pauseVideo(monitorScreenVideoTexture);
+        pauseVideo(lightVideoTexture);
     }
     else if (event.detail.status === 'object-placed') {
         playAnimation();
     }
     else if (event.detail.status === 'not-presenting') {
         pauseVideo(monitorScreenVideoTexture);
+        pauseVideo(lightVideoTexture);
         playAnimation();
     }
 })  
