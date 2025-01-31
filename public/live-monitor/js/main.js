@@ -21,6 +21,7 @@ catch (e) {
 }
 
 modelViewerMonitor.addEventListener("load", async () => { 
+    console.log('Working..')
     const arButton = document.getElementById('ar-button');
     const arIosButton = document.getElementById('arButton');
    
