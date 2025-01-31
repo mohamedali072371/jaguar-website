@@ -23,6 +23,10 @@
       {
         "source": "/monitor",
         "destination": "/ar/index.html"
+      },
+      {
+        "source": "/live-monitor",
+        "destination": "/live-monitor/index.html"
       }
     ],
     "headers": [
