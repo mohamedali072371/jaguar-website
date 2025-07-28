@@ -9,6 +9,7 @@ AFRAME.registerComponent('business-card', {
   init: function () {
 
     // Get the video element
+    const scaninig = document.getElementById("example-scanning-overlay");
     const video = document.getElementById("card");
     const nenonVideo = document.getElementById("nenon");
     const plane = this.el.querySelector("a-plane");
@@ -29,7 +30,7 @@ AFRAME.registerComponent('business-card', {
 
     // Listen for the target being found
     this.el.addEventListener("targetFound", (evt) => {
-
+      scaninig.classList.add("hidden");
       video.currentTime = 0; // Restart video from the beginning
       setTimeout(() => {
         plane.setAttribute("visible", true);
@@ -177,7 +178,7 @@ AFRAME.registerComponent('business-card', {
     
     // Listen for the target being lost
     this.el.addEventListener("targetLost", () => {
-      // scaninig.classList.remove("hidden");
+      scaninig.classList.remove("hidden");
       // plane.setAttribute('material', { opacity: 0 })
       // plane.removeAttribute('animation');
       model.setAttribute('rotation', {x: 90, y: 0, z: 0});
